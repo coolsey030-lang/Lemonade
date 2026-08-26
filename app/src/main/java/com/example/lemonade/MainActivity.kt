@@ -26,6 +26,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -36,6 +37,7 @@ import com.example.lemonade.ui.theme.LemonadeTheme
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContent {
             LemonadeTheme {
                 LemonadeApp()
@@ -46,42 +48,44 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun LemonadeApp() {
-    var currentStep by remember { mutableStateOf(1) }
-    var squeezeCount by remember { mutableStateOf(0) }
+    var etape by remember { mutableStateOf(1) }
+    var clics by remember { mutableStateOf(0) }
 
-    val imageResource = when (currentStep) {
+    val imageResource = when (etape) {
         1 -> R.drawable.lemon_tree
         2 -> R.drawable.lemon_squeeze
         3 -> R.drawable.lemon_drink
         else -> R.drawable.lemon_restart
     }
 
-    val instructionResource = when (currentStep) {
+    val instructionResource = when (etape) {
         1 -> R.string.lemon_select
         2 -> R.string.lemon_squeeze
         3 -> R.string.lemon_drink
         else -> R.string.lemon_empty_glass
     }
 
-    val descriptionResource = when (currentStep) {
+    val descriptionResource = when (etape) {
         1 -> R.string.lemon_tree_content_description
         2 -> R.string.lemon_content_description
         3 -> R.string.lemonade_content_description
         else -> R.string.empty_glass_content_description
     }
 
-    Column(modifier = Modifier.fillMaxSize()) {
-
+    Column(
+        modifier = Modifier.fillMaxSize()
+    ) {
         Box(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(64.dp)
-                .background(MaterialTheme.colorScheme.primaryContainer),
+                .background(Color(0xFFFFE44D)),
             contentAlignment = Alignment.Center
         ) {
             Text(
                 text = stringResource(R.string.app_name),
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.Bold,
+                color = Color.Black
             )
         }
 
@@ -94,36 +98,46 @@ fun LemonadeApp() {
         ) {
             Button(
                 onClick = {
-                    when (currentStep) {
+                    when (etape) {
                         1 -> {
-                            currentStep = 2
-                            squeezeCount = (2..4).random()
+                            etape = 2
+                            clics = (2..4).random()
                         }
 
                         2 -> {
-                            squeezeCount--
-                            if (squeezeCount == 0) currentStep = 3
+                            clics--
+
+                            if (clics == 0) {
+                                etape = 3
+                            }
                         }
 
-                        3 -> currentStep = 4
-                        4 -> currentStep = 1
+                        3 -> etape = 4
+                        4 -> etape = 1
                     }
                 },
                 shape = RoundedCornerShape(40.dp),
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.tertiaryContainer
+                    containerColor =
+                        MaterialTheme.colorScheme.tertiaryContainer
                 )
             ) {
                 Image(
                     painter = painterResource(imageResource),
-                    contentDescription = stringResource(descriptionResource),
+                    contentDescription =
+                        stringResource(descriptionResource),
                     modifier = Modifier
-                        .size(width = 128.dp, height = 160.dp)
+                        .size(
+                            width = 128.dp,
+                            height = 160.dp
+                        )
                         .padding(24.dp)
                 )
             }
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(
+                modifier = Modifier.height(16.dp)
+            )
 
             Text(
                 text = stringResource(instructionResource),
