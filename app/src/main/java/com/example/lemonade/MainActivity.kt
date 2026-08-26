@@ -49,7 +49,6 @@ fun LemonadeApp() {
     var currentStep by remember { mutableStateOf(1) }
     var squeezeCount by remember { mutableStateOf(0) }
 
-    // L'image et le texte changent selon l'étape actuelle.
     val imageResource = when (currentStep) {
         1 -> R.drawable.lemon_tree
         2 -> R.drawable.lemon_squeeze
@@ -72,7 +71,7 @@ fun LemonadeApp() {
     }
 
     Column(modifier = Modifier.fillMaxSize()) {
-        // Barre de titre simple, sans Scaffold ni TopAppBar.
+
         Box(
             modifier = Modifier
                 .fillMaxWidth()
